@@ -177,7 +177,7 @@
     .photo-slot img {
       width: 100%; height: 100%;
       object-fit: cover;
-      display: none; /* shown when src is set */
+      display: none;
     }
 
     .photo-slot .placeholder-icon { font-size: 2.4rem; margin-bottom: 0.5rem; }
@@ -188,22 +188,34 @@
       color: var(--muted);
     }
 
-    /* ── VIDEO SLOT ── */
+    /* ── VIDEO SLOT (PORTRAIT) ── */
+    .video-wrapper {
+      margin-top: 1.2rem;
+      display: flex;
+      justify-content: center;
+    }
+
     .video-slot {
       border-radius: 1.2rem;
       overflow: hidden;
       background: linear-gradient(135deg, #2c1a1e, #4a2830);
-      aspect-ratio: 16/9;
+      aspect-ratio: 9/16;        /* ← portrait */
+      width: 100%;
+      max-width: 360px;          /* ← keeps it a nice phone-like width */
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       border: 1.5px dashed var(--deep-rose);
       cursor: pointer;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
-      margin-top: 1.2rem;
       position: relative;
     }
     .video-slot:hover { transform: translateY(-4px); box-shadow: 0 16px 40px #c2687a33; }
-    .video-slot video { width:100%;height:100%;object-fit:cover; display:none; }
+    .video-slot video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
     .video-slot .play-ring {
       width: 64px; height: 64px; border-radius: 50%;
       border: 2px solid var(--rose);
@@ -352,6 +364,7 @@
     @media (max-width: 520px) {
       .card { padding: 2rem 1.6rem; }
       .photo-grid { grid-template-columns: 1fr; }
+      .video-slot { max-width: 100%; }
     }
   </style>
 </head>
@@ -378,13 +391,11 @@
     <div class="divider"><span>🌸</span></div>
 
     <div class="photo-grid">
-      <!-- Photo 1: replace src="" with your image path -->
       <div class="photo-slot" id="photo1">
         <img src="images/pawi.jpg" alt="Photo of Pawi" id="img1"/>
         <div class="placeholder-icon">📷</div>
         <div class="placeholder-text">Photo 1</div>
       </div>
-      <!-- Photo 2: replace src="" with your image path -->
       <div class="photo-slot" id="photo2">
         <img src="images/pawi2.jpg" alt="Photo of Pawi" id="img2"/>
         <div class="placeholder-icon">📷</div>
@@ -392,11 +403,13 @@
       </div>
     </div>
 
-    <!-- Video: replace src="" with your video path -->
-    <div class="video-slot" id="videoSlot">
-      <video src="images/pawivid.mp4" id="vid1" controls></video>
-      <div class="play-ring"><div class="play-icon"></div></div>
-      <div class="placeholder-text">Your Video</div>
+    <!-- Portrait video -->
+    <div class="video-wrapper">
+      <div class="video-slot" id="videoSlot">
+        <video src="images/pawivid.mp4" id="vid1" controls></video>
+        <div class="play-ring"><div class="play-icon"></div></div>
+        <div class="placeholder-text">Your Video</div>
+      </div>
     </div>
   </div>
 
@@ -485,7 +498,7 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.card').forEach(c => observer.observe(c));
 
-  /* ── PHOTO REVEAL: show img when src is filled ── */
+  /* ── PHOTO REVEAL ── */
   function revealMedia(imgEl, placeholderEl) {
     if (imgEl.src && imgEl.src !== window.location.href) {
       imgEl.style.display = 'block';
